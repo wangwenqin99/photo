@@ -107,3 +107,90 @@ button, input { font: inherit; }
   .album-grid { grid-template-columns: 1fr; gap: 44px; }
   .album-book { max-width: 360px; margin: 0 auto; }
 }
+
+.admin-loading { display: grid; place-content: center; min-height: 100vh; color: var(--muted); }
+.login-shell { display: grid; place-items: center; min-height: 100vh; padding: 24px; background: radial-gradient(circle at top, #fffaf0, var(--paper)); }
+.login-card { width: min(440px, 100%); padding: 48px; border-top: 8px solid var(--terracotta); background: var(--paper-light); box-shadow: 0 28px 75px rgba(77,45,34,.18); }
+.login-card .eyebrow { margin: 48px 0 10px; }
+.login-card h1 { margin: 0; font-size: 38px; font-weight: 500; }
+.login-card > p:not(.eyebrow) { color: var(--muted); }
+.login-card form { display: grid; gap: 18px; margin: 34px 0 24px; }
+.login-card label { display: grid; gap: 8px; color: var(--muted); font-size: 13px; }
+.login-card input, .create-album input { width: 100%; border: 1px solid rgba(89,54,46,.2); border-radius: 3px; outline: none; background: #fffdf8; color: var(--ink); }
+.login-card input { height: 48px; padding: 0 14px; }
+.login-card input:focus, .create-album input:focus { border-color: var(--terracotta); box-shadow: 0 0 0 3px rgba(140,70,56,.1); }
+.primary-button { min-height: 44px; padding: 0 20px; border: 0; border-radius: 3px; background: var(--terracotta); color: white; cursor: pointer; }
+.primary-button:disabled { opacity: .4; cursor: default; }
+.form-error { margin: -6px 0; color: #9d3027 !important; font-size: 13px; }
+
+.admin-shell { min-height: 100vh; background: #efe4d5; font-family: Arial, "Noto Sans SC", sans-serif; }
+.admin-topbar { display: flex; align-items: center; justify-content: space-between; height: 72px; padding: 0 32px; border-bottom: 1px solid rgba(89,54,46,.14); background: var(--paper-light); }
+.admin-topbar > div { display: flex; gap: 24px; align-items: center; color: var(--muted); font-size: 13px; }
+.admin-topbar button, .workspace-header button, .photo-actions button { border: 0; background: none; color: inherit; cursor: pointer; }
+.admin-layout { display: grid; grid-template-columns: 280px minmax(0, 1fr); min-height: calc(100vh - 72px); }
+.album-sidebar { padding: 34px 24px; border-right: 1px solid rgba(89,54,46,.14); background: rgba(251,246,237,.72); }
+.album-sidebar h1 { margin: 4px 0 28px; font: 500 26px Georgia, serif; }
+.create-album { display: grid; gap: 9px; margin-bottom: 32px; }
+.create-album input { height: 42px; padding: 0 12px; }
+.album-sidebar nav { display: grid; gap: 6px; }
+.album-sidebar nav button { display: flex; justify-content: space-between; gap: 12px; width: 100%; padding: 13px 12px; border: 0; border-radius: 3px; background: transparent; color: var(--ink); text-align: left; cursor: pointer; }
+.album-sidebar nav button.selected { background: var(--terracotta); color: white; }
+.album-sidebar nav small { opacity: .7; white-space: nowrap; }
+.admin-workspace { min-width: 0; padding: 36px clamp(24px, 4vw, 56px) 100px; }
+.workspace-header { display: flex; align-items: end; justify-content: space-between; margin-bottom: 30px; }
+.workspace-header h1 { margin: 5px 0; font: 500 clamp(30px, 4vw, 44px) Georgia, serif; }
+.workspace-header span { color: var(--muted); font-size: 13px; }
+.workspace-header > div:last-child { display: flex; gap: 12px; }
+.workspace-header button { padding: 9px 12px; border-bottom: 1px solid rgba(89,54,46,.26); }
+.danger-link { color: #a13b30 !important; }
+.upload-panel, .photo-organizer { margin-bottom: 28px; padding: clamp(20px, 3vw, 32px); border: 1px solid rgba(89,54,46,.14); background: var(--paper-light); box-shadow: 0 12px 35px rgba(77,45,34,.06); }
+.panel-heading { display: flex; justify-content: space-between; align-items: start; margin-bottom: 22px; }
+.panel-heading p { margin: 0 0 6px; color: var(--terracotta); font-size: 9px; font-weight: 700; letter-spacing: .25em; }
+.panel-heading h2 { margin: 0; font: 500 24px Georgia, serif; }
+.panel-heading > span { color: var(--muted); font-size: 12px; }
+.drop-zone { display: grid; place-items: center; gap: 7px; width: 100%; min-height: 128px; border: 1px dashed rgba(140,70,56,.45); border-radius: 4px; background: rgba(244,235,221,.55); color: var(--ink); cursor: pointer; }
+.drop-zone span { color: var(--muted); font-size: 12px; }
+.upload-list { display: grid; gap: 7px; margin: 16px 0; }
+.upload-row { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: 12px; align-items: center; padding: 11px 12px; border-left: 3px solid #c2a891; background: white; }
+.upload-row.uploading { border-color: #c08b43; }
+.upload-row.uploaded { border-color: #5c8b62; }
+.upload-row.failed { border-color: #a13b30; }
+.upload-row > div { display: flex; min-width: 0; gap: 8px; }
+.upload-row strong { overflow: hidden; font-size: 13px; text-overflow: ellipsis; white-space: nowrap; }
+.upload-row span { color: var(--muted); font-size: 11px; white-space: nowrap; }
+.upload-row button { border: 0; background: none; color: var(--terracotta); cursor: pointer; }
+.upload-panel > .primary-button { margin-top: 16px; }
+.photo-admin-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+.photo-admin-card { min-width: 0; padding: 9px; border: 1px solid rgba(89,54,46,.13); background: white; cursor: grab; }
+.photo-admin-image { position: relative; aspect-ratio: 1; overflow: hidden; background: var(--paper); }
+.photo-admin-image img { width: 100%; height: 100%; object-fit: cover; }
+.photo-admin-image span { position: absolute; top: 7px; left: 7px; padding: 4px 7px; border-radius: 2px; background: var(--terracotta); color: white; font-size: 10px; }
+.photo-admin-card > p { overflow: hidden; margin: 9px 2px; font-size: 12px; text-overflow: ellipsis; white-space: nowrap; }
+.photo-actions { display: flex; flex-wrap: wrap; gap: 4px; }
+.photo-actions button { padding: 5px; color: var(--muted); font-size: 11px; }
+.photo-actions button:disabled { opacity: .3; cursor: default; }
+.admin-empty { padding: 34px; color: var(--muted); text-align: center; }
+.admin-empty.large { display: grid; place-content: center; min-height: 60vh; }
+.admin-empty.large h2 { margin-bottom: 0; font: 500 32px Georgia, serif; color: var(--ink); }
+
+@media (max-width: 1000px) { .photo-admin-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 760px) {
+  .admin-topbar { padding-inline: 18px; }
+  .admin-topbar > div a { display: none; }
+  .admin-layout { display: block; }
+  .album-sidebar { border-right: 0; border-bottom: 1px solid rgba(89,54,46,.14); }
+  .album-sidebar nav { display: flex; overflow-x: auto; }
+  .album-sidebar nav button { min-width: 150px; }
+  .admin-workspace { padding: 26px 16px 100px; }
+  .workspace-header { align-items: start; }
+  .workspace-header > div:last-child { flex-direction: column; }
+  .photo-admin-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .upload-row { grid-template-columns: minmax(0, 1fr) auto; }
+  .upload-row button { grid-column: 1 / -1; text-align: left; }
+}
+@media (max-width: 480px) {
+  .login-card { padding: 36px 24px; }
+  .photo-admin-grid { grid-template-columns: 1fr; }
+  .workspace-header { display: block; }
+  .workspace-header > div:last-child { flex-direction: row; margin-top: 16px; }
+}

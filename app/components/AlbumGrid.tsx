@@ -1,5 +1,7 @@
 "use client";
 
+/* eslint-disable @next/next/no-img-element -- photos are dynamic R2 assets served by the app */
+
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 
@@ -28,7 +30,14 @@ export function AlbumGrid() {
     }
   }, []);
 
-  useEffect(() => { void load(); }, [load]);
+  useEffect(() => {
+    let active = true;
+    fetch("/api/albums")
+      .then((response) => { if (!response.ok) throw new Error("request failed"); return response.json(); })
+      .then((data: { albums: Album[] }) => { if (active) { setAlbums(data.albums); setStatus("ready"); } })
+      .catch(() => { if (active) setStatus("error"); });
+    return () => { active = false; };
+  }, []);
 
   if (status === "loading") return <p className="album-status" aria-live="polite">正在打开相册柜…</p>;
   if (status === "error") return (

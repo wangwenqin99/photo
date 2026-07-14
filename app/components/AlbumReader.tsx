@@ -1,5 +1,7 @@
 "use client";
 
+/* eslint-disable @next/next/no-img-element -- photos are dynamic R2 assets served by the app */
+
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { pageSpread } from "@/lib/domain";
@@ -23,7 +25,14 @@ export function AlbumReader({ albumId }: { albumId: string }) {
     } catch { setError(true); }
   }, [albumId]);
 
-  useEffect(() => { void load(); }, [load]);
+  useEffect(() => {
+    let active = true;
+    fetch(`/api/albums/${albumId}`)
+      .then((response) => { if (!response.ok) throw new Error("request failed"); return response.json(); })
+      .then((data: { album: Album }) => { if (active) setAlbum(data.album); })
+      .catch(() => { if (active) setError(true); });
+    return () => { active = false; };
+  }, [albumId]);
   useEffect(() => {
     const media = matchMedia("(max-width: 767px)");
     const update = () => setMobile(media.matches);

@@ -66,6 +66,14 @@ export async function getAlbum(db: D1Database, albumId: string) {
   };
 }
 
+export async function getPhotoRecord(db: D1Database, photoId: string): Promise<PhotoRecord | null> {
+  const row = await db.prepare(`
+    SELECT id, album_id, object_key, original_name, content_type, size_bytes, sort_order, created_at
+    FROM photos WHERE id = ?
+  `).bind(photoId).first();
+  return row ? photoFromRow(row as Record<string, unknown>) : null;
+}
+
 export async function createAlbum(db: D1Database, name: string): Promise<AlbumSummary> {
   const id = crypto.randomUUID();
   const now = Date.now();

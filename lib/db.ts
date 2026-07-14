@@ -96,13 +96,14 @@ export async function deleteAlbumRecords(db: D1Database, albumId: string): Promi
 
 export async function insertPhoto(db: D1Database, input: Omit<PhotoRecord, "createdAt">): Promise<PhotoRecord> {
   const createdAt = Date.now();
-  await db.prepare(`
+  const insert = db.prepare(`
     INSERT INTO photos (id, album_id, object_key, original_name, content_type, size_bytes, sort_order, created_at)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-  `).bind(input.id, input.albumId, input.objectKey, input.originalName, input.contentType, input.sizeBytes, input.sortOrder, createdAt).run();
-  await db.prepare(`
+  `).bind(input.id, input.albumId, input.objectKey, input.originalName, input.contentType, input.sizeBytes, input.sortOrder, createdAt);
+  const updateCover = db.prepare(`
     UPDATE albums SET cover_photo_id = COALESCE(cover_photo_id, ?), updated_at = ? WHERE id = ?
-  `).bind(input.id, createdAt, input.albumId).run();
+  `).bind(input.id, createdAt, input.albumId);
+  await db.batch([insert, updateCover]);
   return { ...input, createdAt };
 }
 

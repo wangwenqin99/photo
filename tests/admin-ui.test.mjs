@@ -12,6 +12,8 @@ test("admin dashboard supports login and full album management", async () => {
   assert.match(dashboard, /修改名称/);
   assert.match(dashboard, /确认删除/);
   assert.match(dashboard, /退出登录/);
+  assert.match(dashboard, /await loadAlbums\(\)/);
+  assert.match(dashboard, /ADMIN_SESSION_EXPIRED_EVENT/);
 });
 
 test("upload queue validates and tracks independent file states", async () => {
@@ -23,6 +25,9 @@ test("upload queue validates and tracks independent file states", async () => {
   assert.match(queue, /validateImage\(/);
   assert.match(queue, /再次上传/);
   assert.match(queue, /slice\(offset, offset \+ 3\)/);
+  assert.match(queue, /xhr\.upload\.onprogress/);
+  assert.match(queue, /progress/);
+  assert.match(queue, /onComplete\(\)/);
 });
 
 test("photo organizer supports reordering, cover selection, and deletion", async () => {

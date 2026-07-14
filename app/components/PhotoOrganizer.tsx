@@ -3,6 +3,7 @@
 /* eslint-disable @next/next/no-img-element -- photos are dynamic R2 assets served by the app */
 
 import { useState } from "react";
+import { adminFetch } from "./adminFetch";
 
 export type AdminPhoto = { id: string; originalName: string };
 
@@ -17,7 +18,7 @@ export function PhotoOrganizer({ albumId, coverPhotoId, photos, onChange }: {
 
   async function saveOrder(next: AdminPhoto[]) {
     setOrdered(next);
-    await fetch(`/api/admin/albums/${albumId}/order`, {
+    await adminFetch(`/api/admin/albums/${albumId}/order`, {
       method: "PATCH", headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ ids: next.map((photo) => photo.id) }),
     });
@@ -32,12 +33,12 @@ export function PhotoOrganizer({ albumId, coverPhotoId, photos, onChange }: {
   }
 
   async function setCover(photoId: string) {
-    await fetch(`/api/admin/photos/${photoId}`, { method: "PATCH" }); onChange();
+    await adminFetch(`/api/admin/photos/${photoId}`, { method: "PATCH" }); onChange();
   }
 
   async function remove(photoId: string) {
     if (!window.confirm("确认删除这张照片？删除后无法恢复。")) return;
-    await fetch(`/api/admin/photos/${photoId}`, { method: "DELETE" }); onChange();
+    await adminFetch(`/api/admin/photos/${photoId}`, { method: "DELETE" }); onChange();
   }
 
   return (

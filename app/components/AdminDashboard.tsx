@@ -4,6 +4,7 @@ import Link from "next/link";
 import { FormEvent, useCallback, useEffect, useState } from "react";
 import { PhotoOrganizer, type AdminPhoto } from "./PhotoOrganizer";
 import { UploadQueue } from "./UploadQueue";
+import { ADMIN_SESSION_EXPIRED_EVENT, adminFetch } from "./adminFetch";
 
 type AlbumSummary = { id: string; name: string; coverPhotoId: string | null; photoCount: number; updatedAt: number };
 type AlbumDetail = AlbumSummary & { photos: AdminPhoto[] };
@@ -49,6 +50,11 @@ export function AdminDashboard() {
     return () => { active = false; };
   }, []);
   useEffect(() => {
+    const expire = () => { setAuthenticated(false); setAlbums([]); setSelected(null); setSelectedId(null); };
+    window.addEventListener(ADMIN_SESSION_EXPIRED_EVENT, expire);
+    return () => window.removeEventListener(ADMIN_SESSION_EXPIRED_EVENT, expire);
+  }, []);
+  useEffect(() => {
     let active = true;
     if (!selectedId) return () => { active = false; };
     fetch(`/api/albums/${selectedId}`)
@@ -63,28 +69,29 @@ export function AdminDashboard() {
     const form = new FormData(event.currentTarget);
     const response = await fetch("/api/admin/login", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email: form.get("email"), password: form.get("password") }) });
     if (!response.ok) { setLoginError("登录信息不正确"); return; }
+    await loadAlbums();
     setAuthenticated(true);
   }
 
   async function create(event: FormEvent) {
     event.preventDefault(); const name = newName.trim(); if (!name) return;
-    const response = await fetch("/api/albums", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ name }) });
+    const response = await adminFetch("/api/albums", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ name }) });
     if (response.ok) { const { album } = await response.json() as { album: AlbumSummary }; setNewName(""); await loadAlbums(); setSelectedId(album.id); }
   }
 
   async function rename() {
     if (!selected) return;
     const name = window.prompt("修改名称", selected.name)?.trim(); if (!name) return;
-    await fetch(`/api/albums/${selected.id}`, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ name }) });
+    await adminFetch(`/api/albums/${selected.id}`, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ name }) });
     await Promise.all([loadAlbums(), loadSelected()]);
   }
 
   async function removeAlbum() {
     if (!selected || !window.confirm(`确认删除相册“${selected.name}”及其中全部照片？此操作无法恢复。`)) return;
-    await fetch(`/api/albums/${selected.id}`, { method: "DELETE" }); setSelected(null); setSelectedId(null); await loadAlbums();
+    await adminFetch(`/api/albums/${selected.id}`, { method: "DELETE" }); setSelected(null); setSelectedId(null); await loadAlbums();
   }
 
-  async function logout() { await fetch("/api/admin/logout", { method: "POST" }); setAuthenticated(false); }
+  async function logout() { await adminFetch("/api/admin/logout", { method: "POST" }); setAuthenticated(false); }
 
   if (authenticated === null) return <main className="admin-loading" aria-live="polite">正在验证管理员身份…</main>;
   if (!authenticated) return <main className="login-shell"><section className="login-card"><Link href="/" className="brand">拾光册</Link><p className="eyebrow">PRIVATE STUDIO</p><h1>管理员登录</h1><p>登录后管理相册与上传珍贵照片。</p><form onSubmit={login}><label>邮箱<input required name="email" type="email" autoComplete="username" /></label><label>密码<input required name="password" type="password" autoComplete="current-password" /></label>{loginError && <p role="alert" className="form-error">{loginError}</p>}<button className="primary-button">进入管理后台</button></form><Link className="back-link" href="/">← 返回公开相册</Link></section></main>;

@@ -34,3 +34,21 @@ test("upload validates images and cleans up failed metadata writes", async () =>
   assert.match(upload, /deletePhoto\(/);
   assert.match(upload, /failed/);
 });
+
+test("photo metadata and default cover update use one D1 batch", async () => {
+  const db = await source("lib/db.ts");
+  assert.match(db, /export async function insertPhoto[\s\S]*?db\.batch\(/);
+});
+
+test("cover changes validate photo ownership", async () => {
+  const album = await source("app/api/albums/[albumId]/route.ts");
+  assert.match(album, /getPhotoRecord/);
+  assert.match(album, /coverPhoto\.albumId !== albumId/);
+});
+
+test("R2 deletion failures are recorded", async () => {
+  const album = await source("app/api/albums/[albumId]/route.ts");
+  const photo = await source("app/api/admin/photos/[photoId]/route.ts");
+  assert.match(album, /console\.error/);
+  assert.match(photo, /console\.error/);
+});

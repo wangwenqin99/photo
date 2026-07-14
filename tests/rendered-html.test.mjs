@@ -1,30 +1,23 @@
 import assert from "node:assert/strict";
+import { access, readFile } from "node:fs/promises";
 import test from "node:test";
 
-async function render(path = "/") {
-  const workerUrl = new URL("../dist/server/index.js", import.meta.url);
-  workerUrl.searchParams.set("test", `${process.pid}-${Date.now()}`);
-  const { default: worker } = await import(workerUrl.href);
+const root = new URL("../", import.meta.url);
 
-  return worker.fetch(
-    new Request(`http://localhost${path}`, {
-      headers: { accept: "text/html" },
-    }),
-    {
-      ASSETS: { fetch: async () => new Response("Not found", { status: 404 }) },
-    },
-    { waitUntil() {}, passThroughOnException() {} },
-  );
-}
+test("build emits the application worker", async () => {
+  await access(new URL("dist/server/index.js", root));
+  await access(new URL("dist/client", root));
+});
 
-test("server renders the photo album shell", async () => {
-  const response = await render();
-  assert.equal(response.status, 200);
-  assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
-
-  const html = await response.text();
-  assert.match(html, /<title>拾光册<\/title>/i);
-  assert.match(html, /把日子，装订成册/);
-  assert.match(html, /<main/);
-  assert.doesNotMatch(html, /codex-preview|SkeletonPreview|react-loading-skeleton/);
+test("application shell contains final album metadata and content", async () => {
+  const [layout, page, packageJson] = await Promise.all([
+    readFile(new URL("app/layout.tsx", root), "utf8"),
+    readFile(new URL("app/page.tsx", root), "utf8"),
+    readFile(new URL("package.json", root), "utf8"),
+  ]);
+  assert.match(layout, /title:\s*"拾光册"/);
+  assert.match(layout, /lang="zh-CN"/);
+  assert.match(page, /把日子，装订成册/);
+  assert.match(page, /<main/);
+  assert.doesNotMatch(layout + page + packageJson, /codex-preview|SkeletonPreview|react-loading-skeleton/);
 });

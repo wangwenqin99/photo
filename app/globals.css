@@ -50,3 +50,60 @@ button, input { font: inherit; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; }
 }
+
+.album-status { max-width: 620px; margin: 0 auto; padding: 44px; text-align: center; color: var(--muted); }
+.album-status button, .reader-state button { border: 0; border-bottom: 1px solid var(--terracotta); background: none; color: var(--terracotta); cursor: pointer; }
+.album-section { max-width: 1180px; margin: 0 auto; }
+.section-heading { margin-bottom: 32px; }
+.section-heading p, .reader-header p { margin: 0 0 8px; color: var(--terracotta); font: 700 10px/1 Arial, sans-serif; letter-spacing: .28em; }
+.section-heading h2 { margin: 0; font-size: 30px; font-weight: 500; }
+.album-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(28px, 4vw, 54px); }
+.album-book { display: block; min-width: 0; }
+.book-cover { position: relative; aspect-ratio: 4/5; margin-left: 14px; overflow: hidden; border-radius: 3px 12px 12px 3px; background: linear-gradient(145deg, #a95d4c, var(--terracotta)); box-shadow: 12px 18px 34px rgba(60,36,29,.19), inset 2px 0 rgba(255,255,255,.16); transition: transform .3s ease, box-shadow .3s ease; }
+.album-book:nth-child(3n+2) .book-cover { background: linear-gradient(145deg, #715047, var(--leather)); }
+.album-book:nth-child(3n+3) .book-cover { background: linear-gradient(145deg, #b07c5e, #83513e); }
+.album-book:hover .book-cover { transform: translateY(-7px) rotate(-.5deg); box-shadow: 16px 25px 42px rgba(60,36,29,.25); }
+.book-spine { position: absolute; z-index: 2; width: 20px; aspect-ratio: 1/12; max-height: 100%; border-radius: 4px 0 0 4px; background: rgba(46,28,24,.45); transform: translate(7px, 0); }
+.book-cover img { width: calc(100% - 40px); height: calc(100% - 140px); margin: 26px 20px; object-fit: cover; border: 7px solid rgba(249,239,223,.92); box-shadow: 0 6px 20px rgba(0,0,0,.22); }
+.cover-placeholder { display: grid; place-items: center; height: calc(100% - 124px); color: rgba(255,248,235,.8); font-size: 42px; letter-spacing: .22em; }
+.cover-label { position: absolute; inset: auto 22px 22px; color: #fff7e9; }
+.cover-label span { font: 700 9px Arial, sans-serif; letter-spacing: .28em; opacity: .72; }
+.cover-label h3 { margin: 7px 0 0; overflow: hidden; font-size: 24px; font-weight: 500; text-overflow: ellipsis; white-space: nowrap; }
+.book-meta { display: flex; justify-content: space-between; gap: 12px; padding: 16px 4px 0 18px; color: var(--muted); font: 12px Arial, sans-serif; }
+
+.reader-shell { min-height: 100vh; padding: 28px 5vw 36px; overflow: hidden; background: radial-gradient(circle at 50% 25%, #fffaf0 0, var(--paper) 58%, #e5d5c2 100%); }
+.reader-header { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; max-width: 1240px; margin: 0 auto 28px; }
+.reader-header > div { text-align: center; }
+.reader-header h1 { margin: 0; font-size: clamp(24px, 3vw, 38px); font-weight: 500; }
+.reader-header > span { justify-self: end; color: var(--muted); font: 12px Arial, sans-serif; }
+.back-link { color: var(--muted); font-size: 13px; }
+.album-spread { position: relative; display: grid; grid-template-columns: 1fr 1fr; gap: 0; width: min(1120px, 88vw); height: min(68vh, 720px); margin: 0 auto; padding: 22px; border-radius: 8px; background: #fffaf0; box-shadow: 0 35px 80px rgba(77,45,34,.23); touch-action: pan-y; }
+.album-spread::after { position: absolute; inset: 0 auto 0 50%; width: 34px; content: ""; transform: translateX(-50%); background: linear-gradient(90deg, transparent, rgba(77,45,34,.12), transparent); pointer-events: none; }
+.photo-page { display: grid; grid-template-rows: 1fr auto; min-width: 0; margin: 0; padding: 26px 32px 14px; overflow: hidden; }
+.photo-page img { width: 100%; height: 100%; min-height: 0; object-fit: contain; filter: drop-shadow(0 8px 12px rgba(64,41,32,.12)); }
+.photo-page figcaption { padding-top: 10px; color: #a39182; font: 10px Arial, sans-serif; text-align: center; letter-spacing: .2em; }
+.reader-controls { display: grid; grid-template-columns: auto minmax(80px, 280px) auto; gap: 24px; align-items: center; justify-content: center; margin-top: 24px; }
+.reader-controls button { display: flex; gap: 10px; border: 0; background: none; color: var(--leather); cursor: pointer; }
+.reader-controls button:disabled { opacity: .28; cursor: default; }
+.page-track { height: 2px; overflow: hidden; background: rgba(89,54,46,.18); }
+.page-track span { display: block; height: 100%; background: var(--terracotta); transition: width .3s ease; }
+.reader-state { display: grid; place-content: center; min-height: 100vh; gap: 16px; text-align: center; background: var(--paper); }
+
+@media (max-width: 900px) { .album-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 767px) {
+  .reader-shell { padding: 18px 16px 26px; }
+  .reader-header { grid-template-columns: auto 1fr auto; margin-bottom: 18px; }
+  .reader-header > div { padding-inline: 8px; }
+  .reader-header h1 { font-size: 22px; }
+  .reader-header p, .back-link { font-size: 0; }
+  .back-link::before { content: "←"; font-size: 22px; }
+  .album-spread { display: block; width: 100%; height: calc(100vh - 190px); min-height: 420px; padding: 14px; }
+  .album-spread::after { display: none; }
+  .photo-page { height: 100%; padding: 18px 12px 10px; }
+  .reader-controls { grid-template-columns: auto 1fr auto; gap: 14px; margin-top: 18px; }
+  .reader-controls button span { display: none; }
+}
+@media (max-width: 560px) {
+  .album-grid { grid-template-columns: 1fr; gap: 44px; }
+  .album-book { max-width: 360px; margin: 0 auto; }
+}

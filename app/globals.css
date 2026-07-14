@@ -1,0 +1,196 @@
+@import "tailwindcss";
+
+:root {
+  --paper: #f4ebdd;
+  --paper-light: #fbf6ed;
+  --terracotta: #8c4638;
+  --leather: #59362e;
+  --ink: #2e2925;
+  --muted: #796d63;
+}
+
+* { box-sizing: border-box; }
+
+html { min-width: 320px; background: var(--paper); }
+
+body {
+  margin: 0;
+  color: var(--ink);
+  background:
+    radial-gradient(circle at 20% 10%, rgba(255,255,255,.72), transparent 34%),
+    linear-gradient(120deg, rgba(89,54,46,.035) 1px, transparent 1px),
+    var(--paper);
+  background-size: auto, 9px 9px, auto;
+  font-family: "Noto Serif SC", "Songti SC", Georgia, serif;
+}
+
+a { color: inherit; text-decoration: none; }
+button, input { font: inherit; }
+
+.home-shell { min-height: 100vh; padding: 0 6vw 72px; }
+.topbar { height: 88px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(89,54,46,.18); }
+.brand { color: var(--leather); font-size: 24px; font-weight: 700; letter-spacing: .16em; }
+.admin-link { color: var(--muted); font-size: 14px; }
+.hero { max-width: 760px; margin: 11vh auto 8vh; text-align: center; }
+.eyebrow { color: var(--terracotta); font-family: Arial, sans-serif; font-size: 11px; letter-spacing: .34em; }
+.hero h1 { margin: 18px 0; font-size: clamp(42px, 7vw, 76px); font-weight: 500; letter-spacing: .06em; }
+.hero > p:last-child { color: var(--muted); font-size: 17px; }
+.empty-albums { max-width: 620px; margin: 0 auto; padding: 56px 24px; border: 1px solid rgba(89,54,46,.18); background: rgba(251,246,237,.72); text-align: center; box-shadow: 0 24px 70px rgba(89,54,46,.08); }
+.empty-albums span { color: var(--terracotta); font-size: 34px; }
+.empty-albums h2 { margin: 16px 0 8px; font-weight: 500; }
+.empty-albums p { margin: 0; color: var(--muted); }
+
+@media (max-width: 640px) {
+  .home-shell { padding-inline: 20px; }
+  .topbar { height: 72px; }
+  .hero { margin-block: 72px 56px; }
+  .hero h1 { font-size: 42px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; }
+}
+
+.album-status { max-width: 620px; margin: 0 auto; padding: 44px; text-align: center; color: var(--muted); }
+.album-status button, .reader-state button { border: 0; border-bottom: 1px solid var(--terracotta); background: none; color: var(--terracotta); cursor: pointer; }
+.album-section { max-width: 1180px; margin: 0 auto; }
+.section-heading { margin-bottom: 32px; }
+.section-heading p, .reader-header p { margin: 0 0 8px; color: var(--terracotta); font: 700 10px/1 Arial, sans-serif; letter-spacing: .28em; }
+.section-heading h2 { margin: 0; font-size: 30px; font-weight: 500; }
+.album-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(28px, 4vw, 54px); }
+.album-book { display: block; min-width: 0; }
+.book-cover { position: relative; aspect-ratio: 4/5; margin-left: 14px; overflow: hidden; border-radius: 3px 12px 12px 3px; background: linear-gradient(145deg, #a95d4c, var(--terracotta)); box-shadow: 12px 18px 34px rgba(60,36,29,.19), inset 2px 0 rgba(255,255,255,.16); transition: transform .3s ease, box-shadow .3s ease; }
+.album-book:nth-child(3n+2) .book-cover { background: linear-gradient(145deg, #715047, var(--leather)); }
+.album-book:nth-child(3n+3) .book-cover { background: linear-gradient(145deg, #b07c5e, #83513e); }
+.album-book:hover .book-cover { transform: translateY(-7px) rotate(-.5deg); box-shadow: 16px 25px 42px rgba(60,36,29,.25); }
+.book-spine { position: absolute; z-index: 2; width: 20px; aspect-ratio: 1/12; max-height: 100%; border-radius: 4px 0 0 4px; background: rgba(46,28,24,.45); transform: translate(7px, 0); }
+.book-cover img { width: calc(100% - 40px); height: calc(100% - 140px); margin: 26px 20px; object-fit: cover; border: 7px solid rgba(249,239,223,.92); box-shadow: 0 6px 20px rgba(0,0,0,.22); }
+.cover-placeholder { display: grid; place-items: center; height: calc(100% - 124px); color: rgba(255,248,235,.8); font-size: 42px; letter-spacing: .22em; }
+.cover-label { position: absolute; inset: auto 22px 22px; color: #fff7e9; }
+.cover-label span { font: 700 9px Arial, sans-serif; letter-spacing: .28em; opacity: .72; }
+.cover-label h3 { margin: 7px 0 0; overflow: hidden; font-size: 24px; font-weight: 500; text-overflow: ellipsis; white-space: nowrap; }
+.book-meta { display: flex; justify-content: space-between; gap: 12px; padding: 16px 4px 0 18px; color: var(--muted); font: 12px Arial, sans-serif; }
+
+.reader-shell { min-height: 100vh; padding: 28px 5vw 36px; overflow: hidden; background: radial-gradient(circle at 50% 25%, #fffaf0 0, var(--paper) 58%, #e5d5c2 100%); }
+.reader-header { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; max-width: 1240px; margin: 0 auto 28px; }
+.reader-header > div { text-align: center; }
+.reader-header h1 { margin: 0; font-size: clamp(24px, 3vw, 38px); font-weight: 500; }
+.reader-header > span { justify-self: end; color: var(--muted); font: 12px Arial, sans-serif; }
+.back-link { color: var(--muted); font-size: 13px; }
+.album-spread { position: relative; display: grid; grid-template-columns: 1fr 1fr; gap: 0; width: min(1120px, 88vw); height: min(68vh, 720px); margin: 0 auto; padding: 22px; border-radius: 8px; background: #fffaf0; box-shadow: 0 35px 80px rgba(77,45,34,.23); touch-action: pan-y; }
+.album-spread::after { position: absolute; inset: 0 auto 0 50%; width: 34px; content: ""; transform: translateX(-50%); background: linear-gradient(90deg, transparent, rgba(77,45,34,.12), transparent); pointer-events: none; }
+.photo-page { display: grid; grid-template-rows: 1fr auto; min-width: 0; margin: 0; padding: 26px 32px 14px; overflow: hidden; }
+.photo-page img { width: 100%; height: 100%; min-height: 0; object-fit: contain; filter: drop-shadow(0 8px 12px rgba(64,41,32,.12)); }
+.photo-page figcaption { padding-top: 10px; color: #a39182; font: 10px Arial, sans-serif; text-align: center; letter-spacing: .2em; }
+.reader-controls { display: grid; grid-template-columns: auto minmax(80px, 280px) auto; gap: 24px; align-items: center; justify-content: center; margin-top: 24px; }
+.reader-controls button { display: flex; gap: 10px; border: 0; background: none; color: var(--leather); cursor: pointer; }
+.reader-controls button:disabled { opacity: .28; cursor: default; }
+.page-track { height: 2px; overflow: hidden; background: rgba(89,54,46,.18); }
+.page-track span { display: block; height: 100%; background: var(--terracotta); transition: width .3s ease; }
+.reader-state { display: grid; place-content: center; min-height: 100vh; gap: 16px; text-align: center; background: var(--paper); }
+
+@media (max-width: 900px) { .album-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 767px) {
+  .reader-shell { padding: 18px 16px 26px; }
+  .reader-header { grid-template-columns: auto 1fr auto; margin-bottom: 18px; }
+  .reader-header > div { padding-inline: 8px; }
+  .reader-header h1 { font-size: 22px; }
+  .reader-header p, .back-link { font-size: 0; }
+  .back-link::before { content: "←"; font-size: 22px; }
+  .album-spread { display: block; width: 100%; height: calc(100vh - 190px); min-height: 420px; padding: 14px; }
+  .album-spread::after { display: none; }
+  .photo-page { height: 100%; padding: 18px 12px 10px; }
+  .reader-controls { grid-template-columns: auto 1fr auto; gap: 14px; margin-top: 18px; }
+  .reader-controls button span { display: none; }
+}
+@media (max-width: 560px) {
+  .album-grid { grid-template-columns: 1fr; gap: 44px; }
+  .album-book { max-width: 360px; margin: 0 auto; }
+}
+
+.admin-loading { display: grid; place-content: center; min-height: 100vh; color: var(--muted); }
+.login-shell { display: grid; place-items: center; min-height: 100vh; padding: 24px; background: radial-gradient(circle at top, #fffaf0, var(--paper)); }
+.login-card { width: min(440px, 100%); padding: 48px; border-top: 8px solid var(--terracotta); background: var(--paper-light); box-shadow: 0 28px 75px rgba(77,45,34,.18); }
+.login-card .eyebrow { margin: 48px 0 10px; }
+.login-card h1 { margin: 0; font-size: 38px; font-weight: 500; }
+.login-card > p:not(.eyebrow) { color: var(--muted); }
+.login-card form { display: grid; gap: 18px; margin: 34px 0 24px; }
+.login-card label { display: grid; gap: 8px; color: var(--muted); font-size: 13px; }
+.login-card input, .create-album input { width: 100%; border: 1px solid rgba(89,54,46,.2); border-radius: 3px; outline: none; background: #fffdf8; color: var(--ink); }
+.login-card input { height: 48px; padding: 0 14px; }
+.login-card input:focus, .create-album input:focus { border-color: var(--terracotta); box-shadow: 0 0 0 3px rgba(140,70,56,.1); }
+.primary-button { min-height: 44px; padding: 0 20px; border: 0; border-radius: 3px; background: var(--terracotta); color: white; cursor: pointer; }
+.primary-button:disabled { opacity: .4; cursor: default; }
+.form-error { margin: -6px 0; color: #9d3027 !important; font-size: 13px; }
+
+.admin-shell { min-height: 100vh; background: #efe4d5; font-family: Arial, "Noto Sans SC", sans-serif; }
+.admin-topbar { display: flex; align-items: center; justify-content: space-between; height: 72px; padding: 0 32px; border-bottom: 1px solid rgba(89,54,46,.14); background: var(--paper-light); }
+.admin-topbar > div { display: flex; gap: 24px; align-items: center; color: var(--muted); font-size: 13px; }
+.admin-topbar button, .workspace-header button, .photo-actions button { border: 0; background: none; color: inherit; cursor: pointer; }
+.admin-layout { display: grid; grid-template-columns: 280px minmax(0, 1fr); min-height: calc(100vh - 72px); }
+.album-sidebar { padding: 34px 24px; border-right: 1px solid rgba(89,54,46,.14); background: rgba(251,246,237,.72); }
+.album-sidebar h1 { margin: 4px 0 28px; font: 500 26px Georgia, serif; }
+.create-album { display: grid; gap: 9px; margin-bottom: 32px; }
+.create-album input { height: 42px; padding: 0 12px; }
+.album-sidebar nav { display: grid; gap: 6px; }
+.album-sidebar nav button { display: flex; justify-content: space-between; gap: 12px; width: 100%; padding: 13px 12px; border: 0; border-radius: 3px; background: transparent; color: var(--ink); text-align: left; cursor: pointer; }
+.album-sidebar nav button.selected { background: var(--terracotta); color: white; }
+.album-sidebar nav small { opacity: .7; white-space: nowrap; }
+.admin-workspace { min-width: 0; padding: 36px clamp(24px, 4vw, 56px) 100px; }
+.workspace-header { display: flex; align-items: end; justify-content: space-between; margin-bottom: 30px; }
+.workspace-header h1 { margin: 5px 0; font: 500 clamp(30px, 4vw, 44px) Georgia, serif; }
+.workspace-header span { color: var(--muted); font-size: 13px; }
+.workspace-header > div:last-child { display: flex; gap: 12px; }
+.workspace-header button { padding: 9px 12px; border-bottom: 1px solid rgba(89,54,46,.26); }
+.danger-link { color: #a13b30 !important; }
+.upload-panel, .photo-organizer { margin-bottom: 28px; padding: clamp(20px, 3vw, 32px); border: 1px solid rgba(89,54,46,.14); background: var(--paper-light); box-shadow: 0 12px 35px rgba(77,45,34,.06); }
+.panel-heading { display: flex; justify-content: space-between; align-items: start; margin-bottom: 22px; }
+.panel-heading p { margin: 0 0 6px; color: var(--terracotta); font-size: 9px; font-weight: 700; letter-spacing: .25em; }
+.panel-heading h2 { margin: 0; font: 500 24px Georgia, serif; }
+.panel-heading > span { color: var(--muted); font-size: 12px; }
+.drop-zone { display: grid; place-items: center; gap: 7px; width: 100%; min-height: 128px; border: 1px dashed rgba(140,70,56,.45); border-radius: 4px; background: rgba(244,235,221,.55); color: var(--ink); cursor: pointer; }
+.drop-zone span { color: var(--muted); font-size: 12px; }
+.upload-list { display: grid; gap: 7px; margin: 16px 0; }
+.upload-row { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: 12px; align-items: center; padding: 11px 12px; border-left: 3px solid #c2a891; background: white; }
+.upload-row.uploading { border-color: #c08b43; }
+.upload-row.uploaded { border-color: #5c8b62; }
+.upload-row.failed { border-color: #a13b30; }
+.upload-row > div { display: flex; min-width: 0; gap: 8px; }
+.upload-row strong { overflow: hidden; font-size: 13px; text-overflow: ellipsis; white-space: nowrap; }
+.upload-row span { color: var(--muted); font-size: 11px; white-space: nowrap; }
+.upload-row button { border: 0; background: none; color: var(--terracotta); cursor: pointer; }
+.upload-panel > .primary-button { margin-top: 16px; }
+.photo-admin-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+.photo-admin-card { min-width: 0; padding: 9px; border: 1px solid rgba(89,54,46,.13); background: white; cursor: grab; }
+.photo-admin-image { position: relative; aspect-ratio: 1; overflow: hidden; background: var(--paper); }
+.photo-admin-image img { width: 100%; height: 100%; object-fit: cover; }
+.photo-admin-image span { position: absolute; top: 7px; left: 7px; padding: 4px 7px; border-radius: 2px; background: var(--terracotta); color: white; font-size: 10px; }
+.photo-admin-card > p { overflow: hidden; margin: 9px 2px; font-size: 12px; text-overflow: ellipsis; white-space: nowrap; }
+.photo-actions { display: flex; flex-wrap: wrap; gap: 4px; }
+.photo-actions button { padding: 5px; color: var(--muted); font-size: 11px; }
+.photo-actions button:disabled { opacity: .3; cursor: default; }
+.admin-empty { padding: 34px; color: var(--muted); text-align: center; }
+.admin-empty.large { display: grid; place-content: center; min-height: 60vh; }
+.admin-empty.large h2 { margin-bottom: 0; font: 500 32px Georgia, serif; color: var(--ink); }
+
+@media (max-width: 1000px) { .photo-admin-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 760px) {
+  .admin-topbar { padding-inline: 18px; }
+  .admin-topbar > div a { display: none; }
+  .admin-layout { display: block; }
+  .album-sidebar { border-right: 0; border-bottom: 1px solid rgba(89,54,46,.14); }
+  .album-sidebar nav { display: flex; overflow-x: auto; }
+  .album-sidebar nav button { min-width: 150px; }
+  .admin-workspace { padding: 26px 16px 100px; }
+  .workspace-header { align-items: start; }
+  .workspace-header > div:last-child { flex-direction: column; }
+  .photo-admin-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .upload-row { grid-template-columns: minmax(0, 1fr) auto; }
+  .upload-row button { grid-column: 1 / -1; text-align: left; }
+}
+@media (max-width: 480px) {
+  .login-card { padding: 36px 24px; }
+  .photo-admin-grid { grid-template-columns: 1fr; }
+  .workspace-header { display: block; }
+  .workspace-header > div:last-child { flex-direction: row; margin-top: 16px; }
+}

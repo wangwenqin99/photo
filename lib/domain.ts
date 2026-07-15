@@ -1,4 +1,4 @@
-export const MAX_IMAGE_BYTES = 20 * 1024 * 1024;
+export const MAX_IMAGE_BYTES = 10 * 1024 * 1024;
 
 const SUPPORTED_IMAGE_TYPES = new Set([
   "image/jpeg",
@@ -49,7 +49,7 @@ export function validateImage(file: { type: string; size: number }):
     return { ok: false, message: "图片文件为空或无效" };
   }
   if (file.size > MAX_IMAGE_BYTES) {
-    return { ok: false, message: "单张图片不能超过 20MB" };
+    return { ok: false, message: "单张图片不能超过 10MB" };
   }
   return { ok: true };
 }

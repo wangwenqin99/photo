@@ -25,11 +25,11 @@ test("cover falls back to the first remaining photo", () => {
   assert.equal(nextCover("a", []), null);
 });
 
-test("accepts supported image types up to 20MB", () => {
-  assert.deepEqual(validateImage({ type: "image/jpeg", size: 20 * 1024 * 1024 }), { ok: true });
+test("accepts supported image types up to 10MB", () => {
+  assert.deepEqual(validateImage({ type: "image/jpeg", size: 10 * 1024 * 1024 }), { ok: true });
 });
 
-test("rejects unsupported types and files over 20MB", () => {
+test("rejects unsupported types and files over 10MB", () => {
   assert.equal(validateImage({ type: "image/svg+xml", size: 20 }).ok, false);
-  assert.equal(validateImage({ type: "image/jpeg", size: 20 * 1024 * 1024 + 1 }).ok, false);
+  assert.equal(validateImage({ type: "image/jpeg", size: 10 * 1024 * 1024 + 1 }).ok, false);
 });

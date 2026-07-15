@@ -77,7 +77,7 @@ export function UploadQueue({ albumId, onComplete }: { albumId: string; onComple
     <section className="upload-panel" aria-labelledby="upload-title">
       <div className="panel-heading"><div><p>UPLOAD</p><h2 id="upload-title">批量上传照片</h2></div><span>{counts.done}/{counts.total}</span></div>
       <button className="drop-zone" type="button" onClick={() => input.current?.click()}>
-        <strong>选择多张图片</strong><span>JPG、PNG、WebP 或 GIF，单张不超过 20MB</span>
+        <strong>选择多张图片</strong><span>JPG、PNG、WebP 或 GIF，单张不超过 10MB</span>
       </button>
       <input ref={input} hidden multiple type="file" accept="image/jpeg,image/png,image/webp,image/gif" onChange={(event) => addFiles(event.target.files)} />
       {items.length > 0 && <div className="upload-list" aria-live="polite">

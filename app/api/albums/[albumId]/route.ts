@@ -38,9 +38,9 @@ export async function DELETE(request: Request, { params }: Context) {
   try { await requireAdmin(request, env); } catch { return Response.json({ error: "请先登录" }, { status: 401 }); }
   const { albumId } = await params;
   const keys = await deleteAlbumRecords(env.DB, albumId);
-  const deleted = await Promise.allSettled(keys.map((key) => deletePhoto(env.PHOTOS, key)));
+  const deleted = await Promise.allSettled(keys.map((key) => deletePhoto(env, key)));
   deleted.forEach((result, index) => {
-    if (result.status === "rejected") console.error("R2 album cleanup failed", { key: keys[index], error: result.reason });
+    if (result.status === "rejected") console.error("Cloudinary album cleanup failed", { key: keys[index], error: result.reason });
   });
   return new Response(null, { status: 204 });
 }

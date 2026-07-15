@@ -46,9 +46,23 @@ test("cover changes validate photo ownership", async () => {
   assert.match(album, /coverPhoto\.albumId !== albumId/);
 });
 
-test("R2 deletion failures are recorded", async () => {
+test("Cloudinary deletion failures are recorded", async () => {
   const album = await source("app/api/albums/[albumId]/route.ts");
   const photo = await source("app/api/admin/photos/[photoId]/route.ts");
-  assert.match(album, /console\.error/);
-  assert.match(photo, /console\.error/);
+  assert.match(album, /Cloudinary album cleanup failed/);
+  assert.match(photo, /Cloudinary photo cleanup failed/);
+});
+
+test("public photo reads redirect to Cloudinary delivery", async () => {
+  const photo = await source("app/api/photos/[photoId]/route.ts");
+  assert.match(photo, /photoDeliveryUrl\(env, photo\.objectKey\)/);
+  assert.match(photo, /status:\s*302/);
+});
+
+test("runtime uses Cloudinary secrets and no R2 binding", async () => {
+  const runtime = await source("lib/runtime.ts");
+  assert.match(runtime, /CLOUDINARY_CLOUD_NAME/);
+  assert.match(runtime, /CLOUDINARY_API_KEY/);
+  assert.match(runtime, /CLOUDINARY_API_SECRET/);
+  assert.doesNotMatch(runtime, /PHOTOS:\s*R2Bucket/);
 });

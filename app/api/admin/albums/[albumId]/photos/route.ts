@@ -29,7 +29,7 @@ export async function POST(request: Request, { params }: Context) {
       }
       let objectKey: string | null = null;
       try {
-        objectKey = await putPhoto(env.PHOTOS, albumId, file);
+        objectKey = await putPhoto(env, albumId, file);
         const id = crypto.randomUUID();
         await insertPhoto(env.DB, {
           id,
@@ -42,7 +42,7 @@ export async function POST(request: Request, { params }: Context) {
         });
         uploaded.push({ id, originalName: file.name });
       } catch {
-        if (objectKey) await deletePhoto(env.PHOTOS, objectKey).catch(() => undefined);
+        if (objectKey) await deletePhoto(env, objectKey).catch(() => undefined);
         failed.push({ originalName: file.name, error: "上传失败，请重试" });
       }
     }));

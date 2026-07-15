@@ -20,6 +20,15 @@ test("verifies configured administrator credentials", async () => {
   assert.equal(await verifyAdminCredentials("other@example.com", "correct horse", env), false);
 });
 
+test("uses a Worker-friendly salted SHA-256 password hash", async () => {
+  const digest = await crypto.subtle.digest(
+    "SHA-256",
+    new TextEncoder().encode("test-salt:correct horse"),
+  );
+  const expected = Buffer.from(digest).toString("base64");
+  assert.equal(await hashPassword("correct horse", "test-salt"), expected);
+});
+
 test("creates a hardened session cookie", () => {
   const cookie = sessionCookie("secret", new Date("2030-01-01T00:00:00Z"));
   assert.match(cookie, /^album_admin=secret;/);

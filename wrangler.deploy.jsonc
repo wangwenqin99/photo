@@ -4,6 +4,12 @@
   "compatibility_date": "2026-05-15",
   "compatibility_flags": ["nodejs_compat"],
   "no_bundle": true,
+  "rules": [
+    {
+      "type": "ESModule",
+      "globs": ["**/*.js", "**/*.mjs"]
+    }
+  ],
   "assets": {
     "directory": "dist/client"
   },
@@ -11,7 +17,8 @@
     {
       "binding": "DB",
       "database_name": "shiguang-photo-album-db",
-      "database_id": "d93a38a5-8ad0-49d0-af7e-3d29f2e4c950"
+      "database_id": "d93a38a5-8ad0-49d0-af7e-3d29f2e4c950",
+      "migrations_dir": "drizzle"
     }
   ],
   "observability": {

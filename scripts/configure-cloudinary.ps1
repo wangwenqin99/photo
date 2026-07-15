@@ -12,13 +12,13 @@ $secretNames = @(
   "CLOUDINARY_API_SECRET"
 )
 
-Write-Host "请依次输入 Cloudinary 配置。输入内容由 Wrangler 安全保存，不会写入项目文件。"
+Write-Host "Enter the three Cloudinary values when prompted. Wrangler stores them as encrypted secrets."
 foreach ($secretName in $secretNames) {
-  Write-Host "正在配置 $secretName"
+  Write-Host "Configuring $secretName"
   & npx wrangler secret put $secretName --config $config
   if ($LASTEXITCODE -ne 0) {
-    throw "配置 $secretName 失败，请检查网络或重新登录 Cloudflare。"
+    throw "Failed to configure $secretName. Check the network connection and Cloudflare login."
   }
 }
 
-Write-Host "Cloudinary 配置完成，可以关闭此窗口。"
+Write-Host "Cloudinary configuration completed. You can close this window."
